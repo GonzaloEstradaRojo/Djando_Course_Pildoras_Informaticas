@@ -4,6 +4,7 @@
 1. [Introducción](#introducción)
 2. [Primer Proyecto](#primer-proyecto)
 3. [Primera Página](#primera-pagina)
+4. [Parámetros en URL](#páginas-dinámicas-y-parámetros-en-url)
 
 ***
 
@@ -91,7 +92,7 @@ def saludo(request):
 En una vista, lo importante es lo que va a recibir por parametro. Para hacer la petición, la vista recibe un *Request* como primer argumento. 
 Después de crear la vista, debemos de decirle a Python la URL que tenemos que introducir en el navegador para poder ver esa vista.
 
-Para enlazar esta vista con el URL para poder ver el texto, tenemos que hacerlo en el archivo ``urls.py``. Podemos observar que hay una tupla *urlpatterns*, que es donde almacenamos las urls. Enotnces lo que haremos es, siguiendo la misma nomenclatura, usamos el path y la URL que queremos enlazar con la vista. La tupla *urlpatterns* quedaria entonces de la siguiente forma:
+Para enlazar esta vista con el URL para poder ver el texto, tenemos que hacerlo en el archivo ``urls.py``. Podemos observar que hay una lista *urlpatterns*, que es donde almacenamos las urls. Enotnces lo que haremos es, siguiendo la misma nomenclatura, usamos el path y la URL que queremos enlazar con la vista. La lista *urlpatterns* quedaria entonces de la siguiente forma:
 
 ```
 urlpatterns = [
@@ -102,7 +103,6 @@ urlpatterns = [
 
 Creamos un path con la url que queremos entre comillas, y como segundo parametro la vista que queremos enlazarle. El nombre de la URL no tiene porque ser el mismo que el de la vista. Lo hacemos asi solo para facilitarnos el trabajo. Como en este caso, nuestra función *saludo* está en otro archivo, tendremos que importarla. Para ello simplemente añadimos ``from Proyecto_1.views import saludo
 `` donde los demas importas.
- **IMPORTANTE:** Asegurarse después del ultimo path de que haya una coma.
 
  Ya simplemente debemos probar que todo funciona bien. Para ello primero arrancamos el servidor (desde el cmd, ejecutar el comando *runserver* desde el archivo ``manage.py``). Una vez arrancado el server, simplemente vamos al navegador y abrimos nuestra Url base con el nuevo path al final que creamos:  http://127.0.0.1:8000/saludo/
 
@@ -118,3 +118,72 @@ def despedida(request):
 No olvidemos añadir una nueva URL con la que enlazar nuestra nueva vista. Añadimos a *urlpatterns* el siguiente path: ``path('hastaluego/', despedida)``
 
 ***
+
+### PÁGINAS DINÁMICAS Y PARÁMETROS EN URL
+
+En esta sección veremos como trabajar con contenido dinámico y pasar parámetros con Django a una URL. Hasta ahora solo hemos usado contenido estático (mostrar mensajes de texto), pero ahora veremos como trabajar de forma dinámica. Para ello vamos a crear un ejemplo que nos muestre la hora y fecha actuales. Dependiendo de cuando se ejecute, tomára la fecha y hora del servidor y la mostrará en pantalla.
+
+Empezaremos creando una nueva vista con el siguiente codigo:
+```
+def getFecha(request):
+    current_date = datetime.datetime.now()
+    text = f"""
+    <html>
+        <body>
+            <h1>
+                Fecha y hora actuales: {current_date}
+            </h1>
+        </body>
+    </html>
+    """
+    return HttpResponse(text)
+```
+
+En esta vista hemos cogido la función ``now`` del modulo datetime que previamente hemos importado, y la hemos añadido en el texto que vamos a mostrar en la página. En este caso, hemos escrito un HTML como el texto para que veamos que sigue funcionando y asi podemos ponerle más customizaciones como el tamaño del párrafo. Ahora simplemente creamos un path con la URL que queramos y simplemente probamos. En mi caso, añadiré ``path('fecha/', getFecha)`` a mi *urlpatterns*
+
+
+Ahora veremos cómo pasarle parámetros a la URL. Para ello vamos a construir una vista que nos diga qué edad tendremos en un año futuro. Crearemos la siguiente vista que nos calcule la edad futura:
+```
+def calculateAge(request, year):
+    current_age = 24
+    current_year = datetime.datetime.now().year
+    time_period = year - current_year
+    future_age = current_age + time_period
+    documento = f"""
+    <html>
+        <body>
+            <h2>
+                En el año {year} tendrás {future_age} años
+            </h2>
+        </body>
+    </html>
+    """
+    return HttpResponse(documento)
+```
+
+Esta vez, aparte del parámetro *request* de la vista, le hemos añadido un segundo parametro a la función, *year*, que será el año en el que queramos calcular nuestra edad.
+
+Vamos a enlazar esta vista con una URL que nos permita añadir un parámetro. El path que añadiremos a *urlpatterns* es el siguiente: ``path('edades/<int:year>', calculateAge)``. Para pasar un parámetro a un URL tenemos que escribirlo entre los simbolos ``< >``- En este caso, como el URL toma todo lo que está entre comillas como texto, y nuestro year es un numero con el que queremos hacer operaciones maetmáticas, tenemos que indicarle a Django que el parámetro que le vamos a pasar es un numero. Para ello, antes del nombre de la variable de la función escribimos ``int:``. Ya solo queda comprobar que funciona navegando a la URL con el parámatro: http://127.0.0.1:8000/edades/2070
+
+Ahora mismo, nuestra edad la tenemos de forma estática. Vamos a ver cómo podemos pasar más de un parámetro a una URL para poder poner nuestra edad actual y en que año queremos saberla. Para ello vamos a modificar la vista anterior (o crear otra distinta). La vista seria:
+
+```
+def calculateAge(request,age,  year):
+    current_age = age
+    current_year = datetime.datetime.now().year
+    time_period = year - current_year
+    future_age = current_age + time_period
+    documento = f"""
+    <html>
+        <body>
+            <h2>
+                En el año {year} tendrás {future_age} años
+            </h2>
+        </body>
+    </html>
+    """
+    return HttpResponse(documento)
+```
+
+En nuestra URL, simplemente tenemos que añadir el parámetro nuevo de la misma forma que si tuvieramos uno. El path quedaría de la forma ``path('edades/<int:age>/<int:year>', calculateAge)``.
+La nueva URL sería de la forma http://127.0.0.1:8000/edades/24/2070
