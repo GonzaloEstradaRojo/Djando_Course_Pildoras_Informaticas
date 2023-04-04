@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 import datetime
+from django.template import Template, Context
 
 def saludo(request):
     return HttpResponse("Hola Mundo!. Primera página con Django")
@@ -51,3 +52,11 @@ def calculateAge2(request,age, year):
     </html>
     """
     return HttpResponse(documento)
+
+def saludo2(request):
+    doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\saludoTemplate.html'
+    with open(doc_path) as doc_externo:
+        templ = Template(doc_externo.read())  
+    ctx = Context()
+    document = templ.render(ctx)
+    return HttpResponse(document)

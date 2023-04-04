@@ -3,13 +3,13 @@
 
 1. [Introducción](#introducción)
 2. [Primer Proyecto](#primer-proyecto)
-3. [Primera Página](#primera-pagina)
+3. [Primera Página](#primera-página)
 4. [Parámetros en URL](#páginas-dinámicas-y-parámetros-en-url)
 
 ***
 
-### INTRODUCCIÓN
-#### ¿Qué es Django? 
+## INTRODUCCIÓN
+### ¿Qué es Django? 
 Django es un **Framework** (un marco de trabajo formado por un conjunto de herramientas, librerías y buenas prácticas) web gratuito de código abierto escrito en Python.
 
 Algunos Frameworks en un patron denominado **MVC** (Modelo Vista Controlador) que consiste dividir cualquier aplicacion web en tres grandes modulos:
@@ -27,7 +27,7 @@ Un usuario hace una peticion en una pagina web, la vista. El controlador recibe 
 Django no se basa exactamente en **MVC** si no en **MTV** (Model Template View), que lo que hace es sustituir las vistas por Templates, el controlador es el view y el Model sigue siendo el Model
 
 ***
-### PRIMER PROYECTO
+## PRIMER PROYECTO
 
 No es necesario que la carpeta la creemos en las raiz del servidor. Podemos crearla donde queramos.
 Para empezar nuestro proyecto, abrimos una terminal CMD y nos dirigimos a la carpeta donde vayamos a guardar nuestro proyecto. En la terminal escribimos el comando
@@ -46,7 +46,7 @@ Este comando crea una Subcarpeta con todo lo necesario para empezar el proyecto.
     - wsgi.py: Relativo al servidor web donde vamos a usar nuestro proyecto de Django
     
     
-#### Inicio de la base de datos
+### Inicio de la base de datos
 Para empezar nuestro proyecto, vamos a necesitar tener una base de datos a la que se conecten las apps que estan en el archivo settings.py. En este proyecto, vamos a empezar usando una base de datos SQLlite3, que viene instalada por defecto con Django y no hace falta configurar cosas adicionales.
 
 ¿Cómo creamos la base de datos para que estas aplicaciones hagan uso de esos datos? En el directorio de nuestro proyecto ejecutamos el siguiente comando:
@@ -68,7 +68,7 @@ python manage.py runserver
 Si todo va bien, en la terminal deberiamos ver una linea que ponga *Starting development server*, que nos indica que ya hemos arrancado el servidor de desarrollo en la direccion que nos indica. En mi caso, es _http://127.0.0.1:8000/_, y al abrir esa URL en un navegador debemos ver la pagina de Django diciendo que la instalación ha funcionado
 
 ***
-### PRIMERA PAGINA
+## PRIMERA PÁGINA
 
 Vamos a crear nuestra primera pagina. Para ello vamos a tener que crear nuestra primera vista y configurar la URL. Por ahora no nos vamos a conectar a ninguna base de datos, asi que del MTV vamos a olvidarnos del Model. Y tampoco vamos a elaborar ningún template con interfaces o formularios para el usuario. Solo vamos a crear una view para hacer peticiones al servidor. 
 
@@ -77,7 +77,7 @@ Para hacer la petición trabajaremos con objetos de la clase **HttpRequest**, y 
 
 Para empezar rearemos un archivo nuevo que correspondera a las vistas que vayamos almacenando. Por convenio, el nombre que suele tener este archivo es ``view.py``.
 
-#### Creación de la vista
+### Creación de la vista
 El primer paso para trabajar con las peticiones es importar el modulo ***django.http*** donde se definen los objetos de **HttpResponse** y **HttpRequest**
 ```
 from django.http import HttpResponse
@@ -119,7 +119,7 @@ No olvidemos añadir una nueva URL con la que enlazar nuestra nueva vista. Añad
 
 ***
 
-### PÁGINAS DINÁMICAS Y PARÁMETROS EN URL
+## PÁGINAS DINÁMICAS Y PARÁMETROS EN URL
 
 En esta sección veremos como trabajar con contenido dinámico y pasar parámetros con Django a una URL. Hasta ahora solo hemos usado contenido estático (mostrar mensajes de texto), pero ahora veremos como trabajar de forma dinámica. Para ello vamos a crear un ejemplo que nos muestre la hora y fecha actuales. Dependiendo de cuando se ejecute, tomára la fecha y hora del servidor y la mostrará en pantalla.
 
@@ -187,3 +187,47 @@ def calculateAge(request,age,  year):
 
 En nuestra URL, simplemente tenemos que añadir el parámetro nuevo de la misma forma que si tuvieramos uno. El path quedaría de la forma ``path('edades/<int:age>/<int:year>', calculateAge)``.
 La nueva URL sería de la forma http://127.0.0.1:8000/edades/24/2070
+***
+
+## Templates
+
+### ¿Qúe son?
+Las **Templates**, o plantillas, son básicamente cadenas de texto que pueden contener codigo HTML. Sirven para separar la parte lógica de la parte visual de un documento web. Hasta ahora habiamos incrustado nuestro código HTML en las vistas, pero esto no debería hacerse. Hay muchas formas de usar las templates. La más normal es guardar la cadena de texto (el documento HTML) en un documento o fichero independiente y despues simplemente cargar ese fichero en la vista.
+
+### ¿Cómo se usan las plantillas?
+El proceso básico para usar una plantilla consta de 3 pasos:
+1. Crear un objeto de tipo Template que lea ese documento donde guardamos nuestra cadena de texto externa de HTML. La Template se crea de la siguiente forma: 
+``plt = Template(doc_externo.read())`` 
+2. Crear un **contexto**. El contexto son los datos adicionales que puede llegar a utilizar la template. Por ejemplo, si queremos añadir contenido dinámico al HTML (como los parámetros en el ejemplo anterior), estos iran almacenados dentro del contexto. El contexto siempre tendremos que crearlo, aunque esté vacío. El contexto se escribe de la forma 
+``ctx = Context()``
+3. Renderizar el objeto Template que hemos creado en el paso 1. Para ello solo usaremos la función render y le pasaremos el contexto como argumento, esté o no vacío. 
+``documento = plt.render(ctx)``
+
+### Ejemplo 1
+Vamos a recrear la URL de saludo que creamos en la sección [Primera Página](#primera-página) con una Template. Para ello vamos a crear una plantilla con un código HTML, cargaremos la plantilla en la vista `saludo`, crearemos un contexto y renderizaremos la plantilla.
+
+Como primer paso vamos a crear una carpeta *Templates* en nuestro directorio donde almacenar las plantillas, y dentro creamos un archivo HTML, donde copiaremos el código de nuestra función saludo. Dentro crearemos nuestro fichero HTML al que llamaremos ``saludoTemplate.html``
+
+```
+<html>
+  <body>
+    <h1>
+      Hola Mundo! Primera pagina con una Template con Django
+    </h1>
+  </body>
+</html>
+```
+
+Ahora tenemos que abrir este documento en nuestro vista y crear una template que lo lea. El código de la función queda de la siguiente forma: 
+
+```
+def saludo(request):
+    doc_path = 'path of the html file'
+    with open(doc_path) as doc_externo:
+        templ = Template(doc_externo.read())  
+    ctx = Context()
+    document = templ.render(ctx)
+    return HttpResponse(document)
+```
+
+En esta función hemos abierto nuestro documento HTML con el operador *with* y la función *open*, indicando el path del archivo en la variable *doc_path*. Hemos creado un archivo Template, un contexto vacío y renderizado la template con dicho contexto. Por último simplemente devolver el render de la template como Response de la vista.
