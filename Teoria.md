@@ -5,6 +5,7 @@
 2. [Primer Proyecto](#primer-proyecto)
 3. [Primera Página](#primera-página)
 4. [Parámetros en URL](#páginas-dinámicas-y-parámetros-en-url)
+5. [Templates](#templates)
 
 ***
 
@@ -35,6 +36,8 @@ Para empezar nuestro proyecto, abrimos una terminal CMD y nos dirigimos a la car
 ```
 django-admin startproject NombreSubCarpeta
 ```    
+<br>
+
     
 Este comando crea una Subcarpeta con todo lo necesario para empezar el proyecto.
 - Un archivo *Manage.py* que es una utilidad de lineas de comandos que nos permite interactuar con nuestros proyectos django. (Si en la terminal por ejemplo ejecutamos *python manage.py help* nos dara un listado de opciones y ayuda).
@@ -44,7 +47,8 @@ Este comando crea una Subcarpeta con todo lo necesario para empezar el proyecto.
     - settings.py: Contiene todas las configuraciones de nuestro proyecto de Django
     - urls.py: Donde se almacenan las urls que usaremos en nuestro proyecto
     - wsgi.py: Relativo al servidor web donde vamos a usar nuestro proyecto de Django
-    
+<br>
+
     
 ### Inicio de la base de datos
 Para empezar nuestro proyecto, vamos a necesitar tener una base de datos a la que se conecten las apps que estan en el archivo settings.py. En este proyecto, vamos a empezar usando una base de datos SQLlite3, que viene instalada por defecto con Django y no hace falta configurar cosas adicionales.
@@ -54,6 +58,7 @@ Para empezar nuestro proyecto, vamos a necesitar tener una base de datos a la qu
 ```
 python manage.py migrate
 ```
+<br>
 
 Esto creaara en nuestra carpeta un nuevo archivo llamado *db.sqlite3* que será nuestra base de datos. Con esto nuestro proyecto ya estaría en funcionamiento. Para comprobarlo, tenemos que ejecutar el servidor, y una vez que este listo, vamos en un navegador a la dirección correspondiente y deberiamos ver la pagina bienvenida de Django
 
@@ -64,7 +69,8 @@ Para ejecutar este servidor de testeo debemos ejecutar el siguienet comando
 ```
 python manage.py runserver
 ```
-    
+<br>
+
 Si todo va bien, en la terminal deberiamos ver una linea que ponga *Starting development server*, que nos indica que ya hemos arrancado el servidor de desarrollo en la direccion que nos indica. En mi caso, es _http://127.0.0.1:8000/_, y al abrir esa URL en un navegador debemos ver la pagina de Django diciendo que la instalación ha funcionado
 
 ***
@@ -82,12 +88,15 @@ El primer paso para trabajar con las peticiones es importar el modulo ***django.
 ```
 from django.http import HttpResponse
 ```
+<br>
+
 Para crear una vista lo que tenemos que hacer es crear una función python. A cada función dentro del archivo View se le denomina **vista** Vamos a crear una función que nos enseñe una pagina básica que ponga "Hola Mundo!". La vista que vamos a crear es la siguiente.
 
 ```
 def saludo(request):
     return HttpResponse("Hola Mundo!. Primera página con Django")
 ```
+<br>
 
 En una vista, lo importante es lo que va a recibir por parametro. Para hacer la petición, la vista recibe un *Request* como primer argumento. 
 Después de crear la vista, debemos de decirle a Python la URL que tenemos que introducir en el navegador para poder ver esa vista.
@@ -100,6 +109,7 @@ urlpatterns = [
     path('saludo/', saludo),
 ]
 ```
+<br>
 
 Creamos un path con la url que queremos entre comillas, y como segundo parametro la vista que queremos enlazarle. El nombre de la URL no tiene porque ser el mismo que el de la vista. Lo hacemos asi solo para facilitarnos el trabajo. Como en este caso, nuestra función *saludo* está en otro archivo, tendremos que importarla. Para ello simplemente añadimos ``from Proyecto_1.views import saludo
 `` donde los demas importas.
@@ -114,6 +124,7 @@ Creamos un path con la url que queremos entre comillas, y como segundo parametro
 def despedida(request):
     return HttpResponse("Adios Mundo!. Fin de mi primera página con Django")
 ```
+<br>
 
 No olvidemos añadir una nueva URL con la que enlazar nuestra nueva vista. Añadimos a *urlpatterns* el siguiente path: ``path('hastaluego/', despedida)``
 
@@ -138,6 +149,7 @@ def getFecha(request):
     """
     return HttpResponse(text)
 ```
+<br>
 
 En esta vista hemos cogido la función ``now`` del modulo datetime que previamente hemos importado, y la hemos añadido en el texto que vamos a mostrar en la página. En este caso, hemos escrito un HTML como el texto para que veamos que sigue funcionando y asi podemos ponerle más customizaciones como el tamaño del párrafo. Ahora simplemente creamos un path con la URL que queramos y simplemente probamos. En mi caso, añadiré ``path('fecha/', getFecha)`` a mi *urlpatterns*
 
@@ -160,6 +172,7 @@ def calculateAge(request, year):
     """
     return HttpResponse(documento)
 ```
+<br>
 
 Esta vez, aparte del parámetro *request* de la vista, le hemos añadido un segundo parametro a la función, *year*, que será el año en el que queramos calcular nuestra edad.
 
@@ -184,6 +197,7 @@ def calculateAge(request,age,  year):
     """
     return HttpResponse(documento)
 ```
+<br>
 
 En nuestra URL, simplemente tenemos que añadir el parámetro nuevo de la misma forma que si tuvieramos uno. El path quedaría de la forma ``path('edades/<int:age>/<int:year>', calculateAge)``.
 La nueva URL sería de la forma http://127.0.0.1:8000/edades/24/2070
@@ -193,6 +207,7 @@ La nueva URL sería de la forma http://127.0.0.1:8000/edades/24/2070
 
 ### ¿Qúe son?
 Las **Templates**, o plantillas, son básicamente cadenas de texto que pueden contener codigo HTML. Sirven para separar la parte lógica de la parte visual de un documento web. Hasta ahora habiamos incrustado nuestro código HTML en las vistas, pero esto no debería hacerse. Hay muchas formas de usar las templates. La más normal es guardar la cadena de texto (el documento HTML) en un documento o fichero independiente y despues simplemente cargar ese fichero en la vista.
+<br>
 
 ### ¿Cómo se usan las plantillas?
 El proceso básico para usar una plantilla consta de 3 pasos:
@@ -202,6 +217,7 @@ El proceso básico para usar una plantilla consta de 3 pasos:
 ``ctx = Context()``
 3. Renderizar el objeto Template que hemos creado en el paso 1. Para ello solo usaremos la función render y le pasaremos el contexto como argumento, esté o no vacío. 
 ``documento = plt.render(ctx)``
+<br>
 
 ### Ejemplo 1
 Vamos a recrear la URL de saludo que creamos en la sección [Primera Página](#primera-página) con una Template. Para ello vamos a crear una plantilla con un código HTML, cargaremos la plantilla en la vista `saludo`, crearemos un contexto y renderizaremos la plantilla.
@@ -216,7 +232,8 @@ Como primer paso vamos a crear una carpeta *Templates* en nuestro directorio don
     </h1>
   </body>
 </html>
-```
+``` 
+<br>
 
 Ahora tenemos que abrir este documento en nuestro vista y crear una template que lo lea. El código de la función queda de la siguiente forma: 
 
@@ -230,4 +247,5 @@ def saludo(request):
     return HttpResponse(document)
 ```
 
+<br>
 En esta función hemos abierto nuestro documento HTML con el operador *with* y la función *open*, indicando el path del archivo en la variable *doc_path*. Hemos creado un archivo Template, un contexto vacío y renderizado la template con dicho contexto. Por último simplemente devolver el render de la template como Response de la vista.
