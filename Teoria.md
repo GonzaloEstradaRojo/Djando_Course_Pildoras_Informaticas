@@ -217,19 +217,18 @@ El proceso básico para usar una plantilla consta de 3 pasos:
 ``ctx = Context()``
 3. Renderizar el objeto Template que hemos creado en el paso 1. Para ello solo usaremos la función render y le pasaremos el contexto como argumento, esté o no vacío. 
 ``documento = plt.render(ctx)``
-<br>
 
 ### Ejemplo 1
-Vamos a recrear la URL de saludo que creamos en la sección [Primera Página](#primera-página) con una Template. Para ello vamos a crear una plantilla con un código HTML, cargaremos la plantilla en la vista `saludo`, crearemos un contexto y renderizaremos la plantilla.
+Vamos a recrear la URL de saludo que creamos en la sección [Primera Página](#primera-página) con una Template. Para ello vamos a crear una plantilla con un código HTML, cargaremos la plantilla en una nueva vista `saludo_Template`, crearemos un contexto y renderizaremos la plantilla.
 
-Como primer paso vamos a crear una carpeta *Templates* en nuestro directorio donde almacenar las plantillas, y dentro creamos un archivo HTML, donde copiaremos el código de nuestra función saludo. Dentro crearemos nuestro fichero HTML al que llamaremos ``saludoTemplate.html``
+Como primer paso vamos a crear una carpeta *Templates* en nuestro directorio donde almacenar las plantillas, y dentro creamos un archivo HTML, donde copiaremos el código de nuestra función saludo. Dentro crearemos nuestro fichero HTML al que llamaremos ``saludo_Template.html``
 
 ```
 <html>
   <body>
-    <h1>
-      Hola Mundo! Primera pagina con una Template con Django
-    </h1>
+      <h1 style="color: red";>
+          Hola Mundo! Primera pagina con una Template con Django
+      </h1>
   </body>
 </html>
 ``` 
@@ -239,7 +238,7 @@ Ahora tenemos que abrir este documento en nuestro vista y crear una template que
 
 ```
 def saludo(request):
-    doc_path = 'path of the html file'
+    doc_path = 'path of the template file'
     with open(doc_path) as doc_externo:
         templ = Template(doc_externo.read())  
     ctx = Context()
@@ -248,4 +247,47 @@ def saludo(request):
 ```
 
 <br>
-En esta función hemos abierto nuestro documento HTML con el operador *with* y la función *open*, indicando el path del archivo en la variable *doc_path*. Hemos creado un archivo Template, un contexto vacío y renderizado la template con dicho contexto. Por último simplemente devolver el render de la template como Response de la vista.
+
+En esta función hemos abierto nuestro documento HTML con el operador *with* y la función *open*, indicando el path del archivo en la variable *doc_path*. Hemos creado un archivo Template, un contexto vacío y renderizado la template con dicho contexto. Por último simplemente devolver el render de la template como Response de la vista.  Podemos ver con el URL que hemos enlazado a la vista, http://127.0.0.1:8000/saludo_template, que funciona perfectamente la plantilla.
+
+### Variables y Propiedadess
+
+Vamos a ver cómo usar variables en plantillas y como acceder a objetos y propiedades desde las plantillas. Para usar las variables de Python que creamos en las vistas en nuestras plantillas, vamos a utilizar el contexto. 
+
+Cuando creamos un contexto, podemos pasarle como argumento un diccionario para que la plantilla pueda acceder a la información guardada dentro. Puede ser algo tan simple como una variable o cadena de texto o tan complejo como un objeto. Si en algun momento le pasamos un objeto en una variable, podemos acceder a las propiedades de las variables desde la template con la notacion del punto. Lo mismo pasaría con instancias de clases que crearamos.
+
+ Vamos a crear una nueva vista igual que la anterior, pero con una variable, y vamos a crear otra plantilla donde usemos dicha variable. En el archivo view añadimos la siguiente función:
+
+```
+def saludo_Template_Variable(request):
+    nombre = "Gon"
+    apellido = "Estrada"
+    doc_path = 'path of the template file'
+    with open(doc_path) as doc_externo:
+        templ = Template(doc_externo.read())  
+    ctx = Context({"nombre_persona":nombre, "apellido":apellido, "fecha":fecha})
+    document = templ.render(ctx)
+    return HttpResponse(document)
+```
+<br>
+
+Creamos una plantilla donde vayamos a usar las variables que tengamos, como *nombre_persona* y *apellido*. Para usar una variable en una template simplemente ponemos el nombre de la key del diccionario del context entre doble llave, es decir, {{key}}. La template quedaría de la siguiente forma:
+```
+<html>
+  <body>
+    <h1 style="color: red";>
+      Hola Mundo! Primera pagina con una Template con Django
+    </h1>
+    <p>
+      El nombre de la persona es {{nombre_persona}} {{apellido}}
+    </p>
+    <p>
+      La fecha actual es {{fecha.date}}
+    </p>
+  </body>
+</html>
+```
+
+Abrimos el URl que hayamos enlazado con la view, http://127.0.0.1:8000/saludo_template_variable/, y podremos ver que efectivamente, aparece el valor de las variables en la página web.
+
+

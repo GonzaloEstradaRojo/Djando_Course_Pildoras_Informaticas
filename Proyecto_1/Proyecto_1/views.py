@@ -53,10 +53,21 @@ def calculateAge2(request,age, year):
     """
     return HttpResponse(documento)
 
-def saludo2(request):
-    doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\saludoTemplate.html'
+def saludo_Template(request):
+    doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\saludo_Template.html'
     with open(doc_path) as doc_externo:
         templ = Template(doc_externo.read())  
     ctx = Context()
+    document = templ.render(ctx)
+    return HttpResponse(document)
+
+def saludo_Template_Variable(request):
+    nombre = "Gon"
+    apellido = "Estrada"
+    fecha = datetime.datetime.now()
+    doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\saludo_Template_Variable.html'
+    with open(doc_path) as doc_externo:
+        templ = Template(doc_externo.read())  
+    ctx = Context({"nombre_persona":nombre, "apellido":apellido, "fecha":fecha})
     document = templ.render(ctx)
     return HttpResponse(document)
