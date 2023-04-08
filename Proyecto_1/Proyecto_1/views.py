@@ -71,3 +71,11 @@ def saludo_Template_Variable(request):
     ctx = Context({"nombre_persona":nombre, "apellido":apellido, "fecha":fecha})
     document = templ.render(ctx)
     return HttpResponse(document)
+
+def lista_Ejemplos(request):
+    doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\lista_Ejemplos_Template.html'
+    with open(doc_path) as doc_externo:
+        templ = Template(doc_externo.read())  
+    ctx = Context({"lista_nombres":[]})  
+    document = templ.render(ctx)
+    return HttpResponse(document)

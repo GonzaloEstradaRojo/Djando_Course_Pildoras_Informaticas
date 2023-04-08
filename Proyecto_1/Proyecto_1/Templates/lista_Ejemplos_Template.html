@@ -1,0 +1,29 @@
+<html>
+  <body>
+    <h1>
+        Ejemplo de listas en Django:
+    </h1>
+    <p> 
+        El primer elemento de la lista {{lista_nombres}} es {{lista_nombres.0}} 
+    </p>
+    <p>
+      {%if lista_nombres %}
+      {% for elem in lista_nombres %}
+          {{elem}}
+      {% endfor %}
+    {% else %}
+    No hay elementos que  mostrar
+    {% endif %}
+    </p>
+    <p>
+      {% for elem in lista_nombres %}
+          <p>{{elem}}</p>
+      {% endfor %}
+    </p>
+    <ul>
+      {% for elem in lista_nombres %}
+          <li>{{elem}}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

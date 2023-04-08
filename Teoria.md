@@ -291,3 +291,86 @@ Creamos una plantilla donde vayamos a usar las variables que tengamos, como *nom
 Abrimos el URl que hayamos enlazado con la view, http://127.0.0.1:8000/saludo_template_variable/, y podremos ver que efectivamente, aparece el valor de las variables en la página web.
 
 
+### Uso de listas y condicionales
+
+Vamos a ver como usar métodos y listas en el contexto. Para agregarla a nuestra plantilla, simplemente añadimos en el diccionario del contexto la lista con una key. Para acceder al elemento que queramos de la lista, usamos la notación del punto y el índice del elemento al que queremos acceder de nuestra liasta.
+
+Por ejemplo, vamos a crear una nueva view `lista_Ejemplos` que llame a una nueva plantilla, `lista_Ejemplos_Template.html`. Podemos coger cualquier vista anterior y simplemente añadirle el siguiente contexto: 
+```
+ctx = Context({"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]})
+```
+<br>
+
+En nuestra plantilla pondremos lo siguiente:
+
+```
+<html>
+  <body>
+    <h1>
+        Ejemplo de listas en Django:
+    </h1>
+    <p> 
+        El primer elemento de la lista {{lista_nombres}} es {{lista_nombres.0}} 
+    </p>
+  </body>
+</html>
+```
+
+En caso de que quisieramos recorrer los elementos de una lista, como con un bucle for o while, podemos poner bucles en nuestras plantillas HTML. Para poner un bucle for en una plantilla, la sixtaxis es de la siguiente forma:
+
+```
+<p>
+    {% for elem in lista_nombres %}
+        {{elem}}
+    {% endfor %}
+</p>
+```
+La forma en la que queda la página puede no ser lo que queramos. Si ya queremos darle estilo o formato a los elementos de la lista, ya sería como un HTML normal. Podriamos crear parrafos que engloben los elementos con la etiqueta `<p>` o crear listas ordenadas o desordenadas con `<ul>`.
+La template para ver todos los casos quedaria asi:
+
+```
+<html>
+  <body>
+    <h1>
+        Ejemplo de listas en Django:
+    </h1>
+    <p> 
+        El primer elemento de la lista {{lista_nombres}} es {{lista_nombres.0}} 
+    </p>
+    <p>
+        {%if lista_nombres %}
+          {% for elem in lista_nombres %}
+              {{elem}}
+          {% endfor %}
+        {% else %}
+          No hay elementos que  mostrar
+        {% endif %}
+    </p>
+    <p>
+      {% for elem in lista_nombres %}
+          <p>{{elem}}</p>
+      {% endfor %}
+    </p>
+    <ul>
+      {% for elem in lista_nombres %}
+          <li>{{elem}}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
+``` 
+
+Podemos ver el resultado con el siguiente enlace que hemos añadido al archivo de las URLs http://127.0.0.1:8000/lista_ejemplos/
+
+También podemos añadir condicionales en nuestras templates, como para comprobar si una lista está vacía o no. Para añadir un if, la sintaxis es igual que la del bucle for.
+
+``` 
+{%if lista_nombres %}
+  {% for elem in lista_nombres %}
+    {{elem}}
+  {% endfor %}
+{% else %}
+  No hay elementos que  mostrar
+{% endif %}
+```
+Lo que hace este if es verificar si la variable *lista_nombres* existe y tiene información. Si ambas se cumple, entra en el if, si alguna de las dos condiciones falla, entra al else.
