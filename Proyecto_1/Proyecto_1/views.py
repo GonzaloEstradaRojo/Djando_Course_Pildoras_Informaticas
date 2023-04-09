@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 import datetime
 from django.template import Template, Context
+from django.template import loader
 
 def saludo(request):
     return HttpResponse("Hola Mundo!. Primera página con Django")
@@ -76,6 +77,14 @@ def lista_Ejemplos(request):
     doc_path = 'G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates\lista_Ejemplos_Template.html'
     with open(doc_path) as doc_externo:
         templ = Template(doc_externo.read())  
-    ctx = Context({"lista_nombres":[]})  
+    #ctx = Context({"lista_nombres":[]}) 
+    ctx = Context({"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]})
     document = templ.render(ctx)
+    return HttpResponse(document)
+
+def saludo_Loader(request):
+    templ = loader.get_template('lista_Ejemplos_Template.html')
+    #templ = get_template('lista_Ejemplos_Template.html')  #si solo hemos importado el get_template
+    dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
+    document = templ.render(dict)
     return HttpResponse(document)

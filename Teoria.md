@@ -373,4 +373,48 @@ También podemos añadir condicionales en nuestras templates, como para comproba
   No hay elementos que  mostrar
 {% endif %}
 ```
-Lo que hace este if es verificar si la variable *lista_nombres* existe y tiene información. Si ambas se cumple, entra en el if, si alguna de las dos condiciones falla, entra al else.
+Lo que hace este if es verificar si la variable *lista_nombres* existe y tiene información. Si ambas se cumple, entra en el if, si alguna de las dos condiciones falla, entra al else. Tambien podemos hacer comperaciones con los símbolos >, < o == en la plantilla. Por ejemplo 
+``{%if lista_nombres.1 == 'Raul` %}``
+Para añadir comentarios a una plantilla (no será visible en la página web, solo en el código), podemos hacerlo en una sola línea con la siguiente sintaxis: ``{#Comentario de una sola línea} ``, o si queremos que sea más de una linea, abriendo y cerrando una etiqueta *comment* 
+```
+{% comment %}
+Comentario múltiples lineas
+{% endcomment %}
+```
+<br>
+
+### Filtros
+Escribir un filtro es como escribir métodos con la nomenclatura del punto. Por ejemplo, si queremos escibir las palabras de la lista en mayúscula podríamos hacer `lista_nombres.upper`, que sería llamar al método *upper*; o `lista_nombres|upper`, que sería llamando el filtro. Para saber más sobre filtros puedes mirar sobre ellos en la documentación de Django, https://docs.djangoproject.com/en/4.2/ref/templates/builtins/. Una gran ventaja que también presentan es que los filtros pueden ir encandenandose unos con otros. Por ejemplo `lista_nombres|first|upper`me dará la primera letra de cada elemento de la lista en mayúscula.
+
+### Cargadores de plantillas (o Loaders)
+
+En nuestros pequeños proyectos no está mal abrir y renderizar las plantillas como lo hemos hecho hasta ahora, abriendo el archivo con un *open*, indicando el path, y luego cerrando el archivo. Pero normalmente en proyectos tendremos que cargar más de una plantilla, y hacer esto con cada uno no es lo más óptimo. Para ello usaremos lo que se llama un **Loader** o **Cargador**.
+
+Consiste en decirle a Django que todas nuestras plantillas va a estar en un directorio concreto y asi cuando queramos usarlo, no tendremos que decirle a Django donde está, no tendremos que abrirlo ni cerrarlo; solo usar el nombre de la plantilla.
+
+Para hacer esto, en nuestro archivo de vistas tendremos que importar desde la libreria de templates el loader
+``` 
+from django.template import loader
+```
+<br>
+
+o bien si lo vamos a usar mucho
+```
+from django.template.loader import get_template
+```
+<br>
+
+El método *get_template()* es la clave que le permitiria a Django saber qué plantilla del directorio es la que queremos.Vamos a ver cómo funciona el loader. Para ello vamos a crear una nueva vista ``saludo_Loader``. La vista (habiendo importado previamente el loader) consistira en el siguiente código:
+
+```
+def saludo_Loader(request):
+    templ = loader.get_template('lista_Ejemplos_Template.html')
+    #templ = get_template('lista_Ejemplos_Template.html')  #si solo hemos importado el get_template
+    dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
+    document = templ.render(dict)
+    return HttpResponse(document)
+```
+
+Para indicar el directorio donde vamos a tener almacenadas nuestras plantillas, tendremos que hacerlo desde el archivo `settings.py`. En el archivo settings tenemos una lista llamada *TEMPLATES* con un diccionario con toda la información relacionada con las plantillas. En el diccionario podemos ver una key llamada `DIRS` con una lista vacía. Cuando está vacia, Django busca en un directorio por defecto en la instalación de Django. Añadimos simplemente la ruta de la carpeta donde tenemos almacenadas nuestras templates a la lista de `DIRS`.
+
+Una cosa muy **importante** que podemos notar es que ahora no usamos contexto. La función *get_template()* nos devuelve una instancia de una clase Template, PERO no es la misma clase Template que en los casos anteriores. Por asi decirlo es como una clase Template de Loader. Y en este tipo de Templates, el render funciona de manera diferente. No admite un Contexto como parámetro, sino directamente un diccionario, asi que aparte de ahorrarnos toda la parte de abrir leer y cerrar los archivos, tambien nos ahorramos una instancia del Context al usar Loaders.

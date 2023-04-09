@@ -54,7 +54,7 @@ ROOT_URLCONF = 'Proyecto_1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['G:\My Drive\Sincronizacion\Programacion\Python\Djando_Course_Pildoras_Informaticas\Proyecto_1\Proyecto_1\Templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
