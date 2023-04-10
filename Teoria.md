@@ -6,6 +6,7 @@
 3. [Primera Página](#primera-página)
 4. [Parámetros en URL](#páginas-dinámicas-y-parámetros-en-url)
 5. [Templates](#templates)
+5. [Bases de Datps](#bases-de-datos)
 
 ***
 
@@ -440,7 +441,7 @@ def saludo_Shortcut(request):
 ```
 Como podemos ver, ahora no ha sido necesaria la instancia de plantilla ni contexto, por lo que nos hemos ahorrado unas cuantas lineas, y ahora nuestra vista devuelve una función render, no una HttpResponse. Podemos verlo en la URL http://127.0.0.1:8000/saludo_shortcut/
 
-## Templates incrustadas
+### Templates incrustadas
 
 A veces tendremos que unir varios HTML dentro de un mismo porque queremos reutilizar varias veces el mismo archivo. Por ejemplo, una barra de navegación que queramos poner en todas nuestras URLs en las cabeceras. Lo que se suele hacer es hacer la barra en un fichero HTML independiente e incrustarlo en nuestra página web.
 
@@ -495,7 +496,7 @@ Como podemos ver, para incrustar una plantilla simplemente debemos escribir `{% 
 
 Ahora parece más una barra de navegación
 
-### Herencia de plantillas
+### Herencia de Templates
 
 A veces puede ocurrir que una página web tenga que teneer los mismos elementos comunes en todos lados, como un header o un footer, pero el contenido tenga que ir cambiando. Entonces ir añadiendo el include en cada sitio puedo no ser lo más optimo. Para estos casos usamos la **Herencia de plantillas**
 
@@ -562,3 +563,13 @@ Podemos ver la nueva plantilla en http://127.0.0.1:8000/herencia2_template/ (abi
 {% include "barra.html" %}
 <h3> Prácticas de Django</h3>`
 ```
+<br>
+
+## BASES DE DATOS
+
+### Introducción
+Hasta ahora hemos visto la parte Template y View del estilo MTV que es Django. Ahora vamos a pasar a ver la parte del Modelo. En esta sección trabajaremos con una base de datos de SQLlite3, que viene instalada por defecto con Django y es muy útil para pequeños proyectos.
+
+Como la base de datos ya está creada, nosotros solo necesitaremos crear las tablas con las columnas e información que necesitemos. Para ello usaremos la clase ***Model*** de Django. 
+
+Para trabjar con la base de datos vamos a crear un nuevo proyecto que será una Tienda Online con una aplicqación que gestione los pedidos y tenga diversas tablas de bases de datos. Un proyecto no tiene porque tener aplicaciones, sobre todo si es pequeño, pero para poder trabajar con modelos y bases de datos Django necesita que exista al menos una aplicación.
