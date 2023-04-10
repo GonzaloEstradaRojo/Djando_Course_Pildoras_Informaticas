@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <h1> Test Gonzalo</h1>
+        {% include "barra.html" %}
+        <h3> Prácticas de Django</h3>
+        {% block content %}
+        {% endblock %}
+        <p>
+            Pie de página común a todo
+        </p>
+    </body>
+</html>

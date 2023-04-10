@@ -494,3 +494,71 @@ Como podemos ver, para incrustar una plantilla simplemente debemos escribir `{% 
 ```
 
 Ahora parece más una barra de navegación
+
+### Herencia de plantillas
+
+A veces puede ocurrir que una página web tenga que teneer los mismos elementos comunes en todos lados, como un header o un footer, pero el contenido tenga que ir cambiando. Entonces ir añadiendo el include en cada sitio puedo no ser lo más optimo. Para estos casos usamos la **Herencia de plantillas**
+
+Es muy similar a como funciona la herencia de POO en Python. Tenemos una plantilla padre con todos los contenidos que van a ser común en todos los sitios web y un **bloque cambiante** que es lo que va a ir cambiando de plantilla en plantilla.
+
+Para indicarle a Django que una plantilla va a heredar de una plantilla pader, simplemente tenemos que utilizar la etiqueta `{% extends "nombre_plantilla" %}`. Es muy importante para que funcione bien que esta etiqueta sea la primera que aparezca en las plantillas hija.
+
+Vamos a empezar creando una plantilla padre, `padre_Template.html` con la siguiente estructura
+
+```
+<html>
+    <head>
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <h1> Test Gonzalo</h1>
+        <h3> Prácticas de Django</h3>
+        {% block content %}
+        {% endblock %}
+        <p>
+            Pie de página común a todo
+        </p>
+    </body>
+</html>
+```
+
+Para indicarle a Django que un bloque va a cambiar de template en template, simplemente usamos la etiqueta `{% block nombre_bloque %}` cerrándola posteriormente con `{% endblock %}`. En este ejemplo hemos creado un HTML básico donde el titulo y el contendio va a cambiar, pero los Headers y el pie de página será el mismo para todas las hijas. 
+
+Ahora crearemos una template hija, `hija1_Template.html`, extendiendo de la template padre primero, y poniendo entre las etiquetas de block lo que queremos que contenga esa template.
+```
+{% extends "padre_Template.html" %}
+
+{% block title %}
+Hija numero 1
+{% endblock %}
+
+{% block content %}
+<p> Estamos a día: {{fecha}}</p>
+{% endblock %}
+```
+
+Si creamos una view que renderice `hija1_Template.html` como hemos visto en apartados anteriors, y creamos un URL para esta view, (http://127.0.0.1:8000/herencia1_template/ en mi caso), podemos ver que en el titulo de la pestaña aparece efectivamente el titulo de Hija número 1, y que paarece el párrafo con la fecha actual.
+
+Si ahora creamos una segunda plantilla hija, `hija2_Template.html`, solo tenemos que cambiar el código de los bloques, y el resto seguirá igual. 
+
+```
+{% extends "padre_Template.html" %}
+
+{% block title %}
+Hija numero 2
+{% endblock %}
+
+{% block content %}
+<p> Esta es la hija 2</p>
+{% endblock %}
+```
+
+Podemos ver la nueva plantilla en http://127.0.0.1:8000/herencia2_template/ (abiendo creado previamente el URL de herencia2_template claro). Podemos incrustar plantillas en la plantilla padre, por ejemplo la barra de navegación que creamos en el apartado anterior, para que todas las hijas también lo tengan. En este caso queremos que esté bajo el titheaderulo que hemos creado, asi que incluiremos la barra bajo el la etiqueta h1 en la plantilla padre
+```      
+<h1> Test Gonzalo</h1>
+{% include "barra.html" %}
+<h3> Prácticas de Django</h3>`
+```

@@ -97,3 +97,10 @@ def saludo_Shortcut(request):
 
 def plantilla_Incrustada(request):
     return render(request,'plantilla_Principal.html')
+
+def herencia1_Template(request):
+    fecha = datetime.datetime.now().date
+    return render(request, "hija1_Template.html", {"fecha":fecha})
+
+def herencia2_Template(request):
+    return render(request, "hija2_Template.html")
