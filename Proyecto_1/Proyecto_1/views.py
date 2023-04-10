@@ -2,6 +2,8 @@ from django.http import HttpResponse
 import datetime
 from django.template import Template, Context
 from django.template import loader
+from django.shortcuts import render
+
 
 def saludo(request):
     return HttpResponse("Hola Mundo!. Primera página con Django")
@@ -88,3 +90,10 @@ def saludo_Loader(request):
     dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
     document = templ.render(dict)
     return HttpResponse(document)
+
+def saludo_Shortcut(request):
+    dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
+    return render(request,'lista_Ejemplos_Template.html',dict )
+
+def plantilla_Incrustada(request):
+    return render(request,'plantilla_Principal.html')

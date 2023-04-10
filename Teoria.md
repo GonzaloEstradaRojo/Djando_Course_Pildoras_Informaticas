@@ -417,4 +417,80 @@ def saludo_Loader(request):
 
 Para indicar el directorio donde vamos a tener almacenadas nuestras plantillas, tendremos que hacerlo desde el archivo `settings.py`. En el archivo settings tenemos una lista llamada *TEMPLATES* con un diccionario con toda la información relacionada con las plantillas. En el diccionario podemos ver una key llamada `DIRS` con una lista vacía. Cuando está vacia, Django busca en un directorio por defecto en la instalación de Django. Añadimos simplemente la ruta de la carpeta donde tenemos almacenadas nuestras templates a la lista de `DIRS`.
 
-Una cosa muy **importante** que podemos notar es que ahora no usamos contexto. La función *get_template()* nos devuelve una instancia de una clase Template, PERO no es la misma clase Template que en los casos anteriores. Por asi decirlo es como una clase Template de Loader. Y en este tipo de Templates, el render funciona de manera diferente. No admite un Contexto como parámetro, sino directamente un diccionario, asi que aparte de ahorrarnos toda la parte de abrir leer y cerrar los archivos, tambien nos ahorramos una instancia del Context al usar Loaders.
+Una cosa muy **importante** que podemos notar es que ahora no usamos contexto. La función *get_template()* nos devuelve una instancia de una clase Template, PERO no es la misma clase Template que en los casos anteriores. Por asi decirlo es como una clase Template de Loader. Y en este tipo de Templates, el render funciona de manera diferente. No admite un Contexto como parámetro, sino directamente un diccionario, asi que aparte de ahorrarnos toda la parte de abrir leer y cerrar los archivos, tambien nos ahorramos una instancia del Context al usar Loaders. Podemos ver nuestro Loader en la URL http://127.0.0.1:8000/saludo_loader/
+
+### Shortcuts
+
+Nuestro código ahora mismo está muy simplificado, pero podriamos simplificarlo incluso más. Ahora mismo creamos una instancia de una template con el *get_template* y tenemos que renderizarla. Sin imbargo, hay una biblioteca de Django que nos permite hacerlo todo de una vez, la librería **shortcuts**.
+
+Vamos a usar la función *render* de esta biblioteca, y en su documentación oficial (https://docs.djangoproject.com/en/4.2/topics/http/shortcuts/) podemos ver más información sobre la función. 
+ 
+Vamos a crear otra view para este ejemplo. El primer paso va a ser importar la función de la biblioteca. Entonces escribimos en la sección de imports del archivo de views 
+
+```
+from django.shortcuts import render
+```
+
+La función render toma como parámetros obligatorios una request y el nombre de la plantilla, y como parámetros opcionales un contexto. Vamos a ver como escribiriamos la sintaxis de la view.
+
+```
+def saludo_Shortcut(request):
+    dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
+    return render(request,'lista_Ejemplos_Template.html',dict )       
+```
+Como podemos ver, ahora no ha sido necesaria la instancia de plantilla ni contexto, por lo que nos hemos ahorrado unas cuantas lineas, y ahora nuestra vista devuelve una función render, no una HttpResponse. Podemos verlo en la URL http://127.0.0.1:8000/saludo_shortcut/
+
+## Templates incrustadas
+
+A veces tendremos que unir varios HTML dentro de un mismo porque queremos reutilizar varias veces el mismo archivo. Por ejemplo, una barra de navegación que queramos poner en todas nuestras URLs en las cabeceras. Lo que se suele hacer es hacer la barra en un fichero HTML independiente e incrustarlo en nuestra página web.
+
+Vamos a ver cómo funcionan las incrustaciones. Vamos a crear una nueva plantilla `barra.html` con una lista muy básica. ya después añadiremos CSS.
+```
+<html>
+<body>
+    <ul>
+        <li>Home</li>
+        <li>Servicios</li>
+        <li>Quienes sómos</li>
+        <li>Contacto</li>
+        <li>Acerca de</li>
+    </ul>
+</body>
+</html>
+```
+
+Despues simplemente tenemos que indicar en nuestra template principal donde ira incrustada nuestra plantilla secundaria.  
+
+```
+<html>
+    <body>
+        {% include "barra.html" %}
+        <h1>
+            Hemos incrustado una barra de navegación al inicio del todo.
+        </h1>
+    </body>
+</html>
+```
+
+Como podemos ver, para incrustar una plantilla simplemente debemos escribir `{% include "nombre_fichero" %}` domde queramos situar la plantilla secundaria. Ya podemos añadirle a nuestar barra un poco de estilo con un CSS en el fichero HTML. Le damos el id *barra* a nuestra lista de elementos, `<ul id = "barra">
+`, y simplemente añadimos a nuestro archivo de barra.html la siguiente etiqueta de estilo:
+
+```
+
+<style>
+#barra{
+    margin:0;
+    padding: 0;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+/* estilo descendiente */
+#barra li{
+    display: inline; /*elementos en linea*/
+    margin: 0 30px;
+}
+</style>
+```
+
+Ahora parece más una barra de navegación
