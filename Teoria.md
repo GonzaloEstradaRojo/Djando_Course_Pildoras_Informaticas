@@ -573,3 +573,101 @@ Hasta ahora hemos visto la parte Template y View del estilo MTV que es Django. A
 Como la base de datos ya está creada, nosotros solo necesitaremos crear las tablas con las columnas e información que necesitemos. Para ello usaremos la clase ***Model*** de Django. 
 
 Para trabjar con la base de datos vamos a crear un nuevo proyecto que será una Tienda Online con una aplicqación que gestione los pedidos y tenga diversas tablas de bases de datos. Un proyecto no tiene porque tener aplicaciones, sobre todo si es pequeño, pero para poder trabajar con modelos y bases de datos Django necesita que exista al menos una aplicación.
+
+### Ejemplo Práctico
+
+#### Creación de la App
+
+Vamos a crear una Tienda online con una app llamada *Gestion_Pedidos* que se encargará de gestionar los pedidos. Esta App va a constar de tres tablas con los siguientes campos:
+
+| Clientes | Artículos | Pedidos |
+|------|------|---------|
+| Nombre | Nombre | Numero|
+| Dirección | Sección | Fecha|
+| Email | Precio | Entregado |
+| Teléfono | 
+
+Vamos a crear un nuevo proyecto Django para este ejemplo. Lo llamaremos *Tienda_Online*. Recordamos que para crear un proyecto en Django simplemente era ejecutar en la consola en el siguiente comando 
+```
+django-admin startproject Tienda_Online
+```
+<br>
+
+Para crear en nuestro proyecto nuestra primera aplicación, *Gestion_Pedidos*, nos dirigiremos desde la consola al directorio de nuestra nueva carpeta creada ```cd Tienda_online``` y una vez dentro ejecutamos el fichero ``manage.py``con el siguiente comando:
+
+```
+python manage.py startapp Gestion_Pedidos
+```
+<br>
+
+
+Este comando nos creara una nueva carpeta que corresponde a nuestra priemra aplicación con todos los archivos necesarios para la aplicación.
+
+#### Creación del modelo
+
+Vamos a trabajar con las bases de datos en nuestro archivo ``model.py``. Django le da un enfoque orientado a objetos al manejo de las bases de datos, tablas, etc. Asi que en nuestro archivo model tendremos que crear una clase por cada  tabla que necesitemos en la base de datos. No necesitaremos ningun comando de SQL para crear tablas ni nada por el estilo, Django lo hace por nosotros. 
+
+Vamos a crear nuestra primera clase llamada *Clientes*. Como necesitamos trabajar con la clase Model, hacemos que nuestra clase la herede. Dentro de la clase empezamos a crear los campos que queremos en nuestra tabla y el tipo de dato que va almacenar dentro el campo.
+```
+class Clientes(models.Model):
+    nombre = models.CharField(max_length=30)
+```
+<br>
+
+Hemos creado un campo *nombre* de tipo texto o Char, y le hemos fijado la longitud máxima de caracteres del campo a 30. De la misma forma que hemos indicado que nuestro campo es de tipo texto, podemos decir si es de tipo Integer, tipo Date, tipo Boolean o incluso tipo Email (lo que solo permite al campo que se introduzcan direcciones de correo validas, que tengan un @ o un punto.).
+
+Vamos a completar entonces la tabla y a crear el resto de tablas de nuestro modelo de forma análoga. Al final, nuestro archivo ``models.py`` queda de la siguiente forma:
+
+```
+from django.db import models
+
+# Create your models here.
+class Clientes(models.Model):
+    nombre = models.CharField(max_length=30)
+    direccion = models.CharField(max_length=50)
+    email = models.EmailField()
+    telefono = models.CharField(max_length=9)
+
+class Articulos(models.Model):
+    nombre = models.CharField(max_length=30)
+    seccion = models.CharField(max_length=20)
+    precio = models.IntegerField()
+
+class Pedidos(models.Model):
+    numero = models.IntegerField()
+    fecha = models.DateField(max_length=30)
+    entregado = models.BooleanField()
+```
+<br>
+
+
+Ya tenemos creado nuestro primer modelo con la estructura de nuestra base de datos. Ahora tenemos que decirle a Django que tenemos una aplicación nuevo llamada *Gestion_Pedidos*. Para ello, tenemos que registrar la app en el archivo ``settings.py`` de nuestro proyecto *Tienda_online*. Tenemos que añadirlo a la lista llamada **INSTALLED_APPS** que contiene las aplicaciones predeterminadas que tiene un proyecto de Django al crearlo. 
+
+Para verificar que por ahora lo hemos hecho todo bien, podemos ingresar el siguiente comando en la consola 
+```
+python manage.py check Gestion_Pedidos
+```
+que nos confirmara si hay algun problema con nuestro proyecto.
+
+#### Creación de la base de datos.
+
+A continuación vamos a crear la base de datos que va a usar nuestro modelo. Usaremos el siguiente comando
+```
+python manage.py makemigrations
+```
+<br>
+
+Nos debe devolver un mensaje con un **Número de control** (importante despues para controlar la versión de nuestro modelo o las modificaciones. En nuestro caso es 0001 por ser la primera migración) diciendo que se ha hecho la migración con los modelos que hemos creado. En nuestro directorio ya podemos ver un archivo ``db.sqlite3`` que es nuestra base de datos que esta vacía. Nos toca ahora insertar las tablas de nuestro modelo en la base de datos. Para ello necesitamos los comandos SQL que crean las tablas, pero Django lo hace por nosotros. Para ello usaremos el siguiente comando:
+```
+python manage.py sqlmigrate Gestion_Pedidos 0001
+```
+es decir, la función *sqlmigrate* del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el numero de control de la migración que hayamos hecho.
+
+Este código nos devolverá los comando SQL que necesitamos para crear las tablas en nuestra base de datos. Una vez que los tengamos, crearemos las tablas con el siguiente comando
+
+```
+python manage.py migrate
+```
+<br>
+
+Ya tenemos lista nuestra base de datos con todas nuestras tablas y campos creados. Si usamos un visor de tablas de datos podemos ver que todas nuestras tablas se han creado, aparte de algunas tablas extras que necesita Django para operar. Además, en nuestras tablas podemos ver que hay un campo extra 'id' que es la primary key de cada tabla y es generada automaticamente por Django. Si queremos cambiarle el nombre o crear otra distinta nosotros mismos, también es posible. 
