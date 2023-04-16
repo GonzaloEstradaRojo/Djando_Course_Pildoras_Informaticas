@@ -1,0 +1,9 @@
+{"rule":"MORFOLOGIK_RULE_ES","sentence":"^\\QUna sub carpeta con el mismo nombre del proyecto que contiene otros archivos muy importantes:\n\\_init\\_.py:\\E$"}
+{"rule":"MORFOLOGIK_RULE_ES","sentence":"^\\QEsto creará en nuestra carpeta un nuevo archivo llamado db.sqlite3 que será nuestra base de datos.\\E$"}
+{"rule":"MORFOLOGIK_RULE_ES","sentence":"^\\QSi todo va bien, en la terminal deberíamos ver una línea que ponga Starting development server, que nos indica que ya hemos arrancado el servidor de desarrollo en la direccion que nos indica.\\E$"}
+{"rule":"WRONG_IMPERATIVE","sentence":"^\\QY tampoco vamos a elaborar ningún template con interfaces o formularios para el usuario.\\E$"}
+{"rule":"MORFOLOGIK_RULE_ES","sentence":"^\\QPor convenio, el nombre que suele tener este archivo es \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"SUBJUNTIVO_PASADO","sentence":"^\\QHemos creado un campo nombre de tipo texto o Char, y le hemos fijado la longitud máxima de caracteres del campo a 30.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qque nos confirmará si hay algun problema con nuestro proyecto.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qes decir, la función sqlmigrate del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el numero de control de la migración que hayamos hecho.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qes decir, la función sqlmigrate del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el número de control de la migración que hayamos hecho.\\E$"}

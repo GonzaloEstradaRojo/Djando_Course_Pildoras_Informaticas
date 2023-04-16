@@ -1,0 +1,12 @@
+Model
+Framework
+Frameworks
+View
+Templates
+FRAMEWORK
+view
+python
+help
+urls
+HttpResponse
+HttpRequest

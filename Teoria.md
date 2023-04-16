@@ -6,7 +6,7 @@
 3. [Primera Página](#primera-página)
 4. [Parámetros en URL](#páginas-dinámicas-y-parámetros-en-url)
 5. [Templates](#templates)
-5. [Bases de Datps](#bases-de-datos)
+5. [Bases de Datos](#bases-de-datos)
 
 ***
 
@@ -14,24 +14,24 @@
 ### ¿Qué es Django? 
 Django es un **Framework** (un marco de trabajo formado por un conjunto de herramientas, librerías y buenas prácticas) web gratuito de código abierto escrito en Python.
 
-Algunos Frameworks en un patron denominado **MVC** (Modelo Vista Controlador) que consiste dividir cualquier aplicacion web en tres grandes modulos:
+Algunos Frameworks en un patrón denominado **MVC** (Modelo Vista Controlador) que consiste dividir cualquier aplicación web en tres grandes módulos:
 - Modelo
 - Vista
 - Controlador
 
 El *Modelo* es el que se encarga de obtener la información, normalmente de una base de datos.
-La *Vista* es el encargado de mostrar la información al usuario (lo que el usuario ve y con lo que interactua).
+La *Vista* es el encargado de mostrar la información al usuario (lo que el usuario ve y con lo que interactúa).
 El *Controlador* se encarga de gestionar todas las comunicaciones existentes entre la vista y el modelo.
 
 El proceso en un modelo MVC sería:
-Un usuario hace una peticion en una pagina web, la vista. El controlador recibe la petición y demanda datos al modelo, el modelo devuelve los datos pedidos al controlador, que se los da a la vista para que los enseñe al usuario.
+Un usuario hace una petición en una página web, la vista. El controlador recibe la petición y demanda datos al modelo, el modelo devuelve los datos pedidos al controlador, que se los da a la vista para que los enseñe al usuario.
 
-Django no se basa exactamente en **MVC** si no en **MTV** (Model Template View), que lo que hace es sustituir las vistas por Templates, el controlador es el view y el Model sigue siendo el Model
+Django no se basa exactamente en **MVC** sino en **MTV** (Model Template View), que lo que hace es sustituir las vistas por Templates, el controlador es el view y el Model sigue siendo el Model
 
 ***
 ## PRIMER PROYECTO
 
-No es necesario que la carpeta la creemos en las raiz del servidor. Podemos crearla donde queramos.
+No es necesario que la carpeta la creemos en la raíz del servidor. Podemos crearla donde queramos.
 Para empezar nuestro proyecto, abrimos una terminal CMD y nos dirigimos a la carpeta donde vayamos a guardar nuestro proyecto. En la terminal escribimos el comando
 
 ```
@@ -40,10 +40,10 @@ django-admin startproject NombreSubCarpeta
 <br>
 
     
-Este comando crea una Subcarpeta con todo lo necesario para empezar el proyecto.
-- Un archivo *Manage.py* que es una utilidad de lineas de comandos que nos permite interactuar con nuestros proyectos django. (Si en la terminal por ejemplo ejecutamos *python manage.py help* nos dara un listado de opciones y ayuda).
+Este comando crea una sub carpeta con todo lo necesario para empezar el proyecto.
+- Un archivo *Manage.py* que es una utilidad de líneas de comandos que nos permite interactuar con nuestros proyectos Django. (Si en la terminal por ejemplo ejecutamos *python manage.py help* nos dará un listado de opciones y ayuda).
 
-- Una subcarpeta con el mismo nombre del proyecto que contiene otros archivos muy importantes:
+- Una sub carpeta con el mismo nombre del proyecto que contiene otros archivos muy importantes:
     - \_init\_.py: Permite que python trate al directorio como un paquete
     - settings.py: Contiene todas las configuraciones de nuestro proyecto de Django
     - urls.py: Donde se almacenan las urls que usaremos en nuestro proyecto
@@ -52,7 +52,7 @@ Este comando crea una Subcarpeta con todo lo necesario para empezar el proyecto.
 
     
 ### Inicio de la base de datos
-Para empezar nuestro proyecto, vamos a necesitar tener una base de datos a la que se conecten las apps que estan en el archivo settings.py. En este proyecto, vamos a empezar usando una base de datos SQLlite3, que viene instalada por defecto con Django y no hace falta configurar cosas adicionales.
+Para empezar nuestro proyecto, vamos a necesitar tener una base de datos a la que se conecten las apps que están en el archivo settings.py. En este proyecto, vamos a empezar usando una base de datos SQLlite3, que viene instalada por defecto con Django y no hace falta configurar cosas adicionales.
 
 ¿Cómo creamos la base de datos para que estas aplicaciones hagan uso de esos datos? En el directorio de nuestro proyecto ejecutamos el siguiente comando:
 
@@ -61,37 +61,37 @@ python manage.py migrate
 ```
 <br>
 
-Esto creaara en nuestra carpeta un nuevo archivo llamado *db.sqlite3* que será nuestra base de datos. Con esto nuestro proyecto ya estaría en funcionamiento. Para comprobarlo, tenemos que ejecutar el servidor, y una vez que este listo, vamos en un navegador a la dirección correspondiente y deberiamos ver la pagina bienvenida de Django
+Esto creará en nuestra carpeta un nuevo archivo llamado *db.sqlite3* que será nuestra base de datos. Con esto nuestro proyecto ya estaría en funcionamiento. Para comprobarlo, tenemos que ejecutar el servidor, y una vez que este listo, vamos en un navegador a la dirección correspondiente y deberíamos ver la página bienvenida de Django
 
     
-A lo largo iremos usando diferentes servidores de prueba. Django viene ya con un servidor para poder hacer pruebas muy ligero que no es recomendable para proyectos serios porque es un servidor que no admite multiples peticiones simultaneas, no admite cargas de trabajo pesada... Solo sirve para hacer pequeños proyectos y ver si se ven.
+A lo largo iremos usando diferentes servidores de prueba. Django viene ya con un servidor para poder hacer pruebas muy ligero que no es recomendable para proyectos serios porque es un servidor que no admite múltiples peticiones simultáneas, no admite cargas de trabajo pesadas... Solo sirve para hacer pequeños proyectos y ver si se ven.
 
-Para ejecutar este servidor de testeo debemos ejecutar el siguienet comando
+Para ejecutar este servidor de testeo debemos ejecutar el siguiente comando
 ```
 python manage.py runserver
 ```
 <br>
 
-Si todo va bien, en la terminal deberiamos ver una linea que ponga *Starting development server*, que nos indica que ya hemos arrancado el servidor de desarrollo en la direccion que nos indica. En mi caso, es _http://127.0.0.1:8000/_, y al abrir esa URL en un navegador debemos ver la pagina de Django diciendo que la instalación ha funcionado
+Si todo va bien, en la terminal deberíamos ver una línea que ponga *Starting development server*, que nos indica que ya hemos arrancado el servidor de desarrollo en la dirección que nos indica. En mi caso, es _http://127.0.0.1:8000/_, y al abrir esa URL en un navegador debemos ver la página de Django diciendo que la instalación ha funcionado
 
 ***
 ## PRIMERA PÁGINA
 
-Vamos a crear nuestra primera pagina. Para ello vamos a tener que crear nuestra primera vista y configurar la URL. Por ahora no nos vamos a conectar a ninguna base de datos, asi que del MTV vamos a olvidarnos del Model. Y tampoco vamos a elaborar ningún template con interfaces o formularios para el usuario. Solo vamos a crear una view para hacer peticiones al servidor. 
+Vamos a crear nuestra primera página. Para ello vamos a tener que crear nuestra primera vista y configurar la URL. Por ahora no nos vamos a conectar a ninguna base de datos, así que del MTV vamos a olvidarnos del Model. Y tampoco vamos a elaborar ningún template con interfaces o formularios para el usuario. Solo vamos a crear una view para hacer peticiones al servidor. 
 
 Para hacer la petición, Django va a trabajar con dos objetos fundamentales:
 Para hacer la petición trabajaremos con objetos de la clase **HttpRequest**, y para manejar la respuesta vamos a trabajar con objetos de la clase **HttpResponse**.
 
-Para empezar rearemos un archivo nuevo que correspondera a las vistas que vayamos almacenando. Por convenio, el nombre que suele tener este archivo es ``view.py``.
+Para empezar crearemos un archivo nuevo que corresponderá a las vistas que vayamos almacenando. Por convenio, el nombre que suele tener este archivo es ``view.py``.
 
 ### Creación de la vista
-El primer paso para trabajar con las peticiones es importar el modulo ***django.http*** donde se definen los objetos de **HttpResponse** y **HttpRequest**
+El primer paso para trabajar con las peticiones es importar el módulo ***django.http*** donde se definen los objetos de **HttpResponse** y **HttpRequest**
 ```
 from django.http import HttpResponse
 ```
 <br>
 
-Para crear una vista lo que tenemos que hacer es crear una función python. A cada función dentro del archivo View se le denomina **vista** Vamos a crear una función que nos enseñe una pagina básica que ponga "Hola Mundo!". La vista que vamos a crear es la siguiente.
+Para crear una vista lo que tenemos que hacer es crear una función python. A cada función dentro del archivo View se le denomina **vista** Vamos a crear una función que nos enseñe una página básica que ponga "Hola Mundo!". La vista que vamos a crear es la siguiente.
 
 ```
 def saludo(request):
@@ -112,10 +112,10 @@ urlpatterns = [
 ```
 <br>
 
-Creamos un path con la url que queremos entre comillas, y como segundo parametro la vista que queremos enlazarle. El nombre de la URL no tiene porque ser el mismo que el de la vista. Lo hacemos asi solo para facilitarnos el trabajo. Como en este caso, nuestra función *saludo* está en otro archivo, tendremos que importarla. Para ello simplemente añadimos ``from Proyecto_1.views import saludo
+Creamos un path con la url que queremos entre comillas, y como segundo parametro la vista que queremos enlazarle. El nombre de la URL no tiene por qué ser el mismo que el de la vista. Lo hacemos asi solo para facilitarnos el trabajo. Como en este caso, nuestra función *saludo* está en otro archivo, tendremos que importarla. Para ello simplemente añadimos ``from Proyecto_1.views import saludo
 `` donde los demas importas.
 
- Ya simplemente debemos probar que todo funciona bien. Para ello primero arrancamos el servidor (desde el cmd, ejecutar el comando *runserver* desde el archivo ``manage.py``). Una vez arrancado el server, simplemente vamos al navegador y abrimos nuestra Url base con el nuevo path al final que creamos:  http://127.0.0.1:8000/saludo/
+ Ya simplemente debemos probar que todo funciona bien. Para ello primero arrancamos el servidor (desde el cmd, ejecutar el comando *runserver* desde el archivo ``manage.py``). Una vez arrancado el server, simplemente vamos al navegador y abrimos nuestra Url base con el nuevo path al final que creamos: http://127.0.0.1:8000/saludo/
 
  Acabamos de crear nuestra primera página web con Django. Ahora podemos crear más vistas y URLs para 
 
@@ -152,7 +152,7 @@ def getFecha(request):
 ```
 <br>
 
-En esta vista hemos cogido la función ``now`` del modulo datetime que previamente hemos importado, y la hemos añadido en el texto que vamos a mostrar en la página. En este caso, hemos escrito un HTML como el texto para que veamos que sigue funcionando y asi podemos ponerle más customizaciones como el tamaño del párrafo. Ahora simplemente creamos un path con la URL que queramos y simplemente probamos. En mi caso, añadiré ``path('fecha/', getFecha)`` a mi *urlpatterns*
+En esta vista hemos cogido la función ``now`` del módulo datetime que previamente hemos importado, y la hemos añadido en el texto que vamos a mostrar en la página. En este caso, hemos escrito un HTML como el texto para que veamos que sigue funcionando y asi podemos ponerle más customizaciones como el tamaño del párrafo. Ahora simplemente creamos un path con la URL que queramos y simplemente probamos. En mi caso, añadiré ``path('fecha/', getFecha)`` a mi *urlpatterns*
 
 
 Ahora veremos cómo pasarle parámetros a la URL. Para ello vamos a construir una vista que nos diga qué edad tendremos en un año futuro. Crearemos la siguiente vista que nos calcule la edad futura:
@@ -177,7 +177,7 @@ def calculateAge(request, year):
 
 Esta vez, aparte del parámetro *request* de la vista, le hemos añadido un segundo parametro a la función, *year*, que será el año en el que queramos calcular nuestra edad.
 
-Vamos a enlazar esta vista con una URL que nos permita añadir un parámetro. El path que añadiremos a *urlpatterns* es el siguiente: ``path('edades/<int:year>', calculateAge)``. Para pasar un parámetro a un URL tenemos que escribirlo entre los simbolos ``< >``- En este caso, como el URL toma todo lo que está entre comillas como texto, y nuestro year es un numero con el que queremos hacer operaciones maetmáticas, tenemos que indicarle a Django que el parámetro que le vamos a pasar es un numero. Para ello, antes del nombre de la variable de la función escribimos ``int:``. Ya solo queda comprobar que funciona navegando a la URL con el parámatro: http://127.0.0.1:8000/edades/2070
+Vamos a enlazar esta vista con una URL que nos permita añadir un parámetro. El path que añadiremos a *urlpatterns* es el siguiente: ``path('edades/<int:year>', calculateAge)``. Para pasar un parámetro a un URL tenemos que escribirlo entre los simbolos ``< >``- En este caso, como el URL toma todo lo que está entre comillas como texto, y nuestro year es un número con el que queremos hacer operaciones maetmáticas, tenemos que indicarle a Django que el parámetro que le vamos a pasar es un número. Para ello, antes del nombre de la variable de la función escribimos ``int:``. Ya solo queda comprobar que funciona navegando a la URL con el parámatro: http://127.0.0.1:8000/edades/2070
 
 Ahora mismo, nuestra edad la tenemos de forma estática. Vamos a ver cómo podemos pasar más de un parámetro a una URL para poder poner nuestra edad actual y en que año queremos saberla. Para ello vamos a modificar la vista anterior (o crear otra distinta). La vista seria:
 
@@ -207,12 +207,12 @@ La nueva URL sería de la forma http://127.0.0.1:8000/edades/24/2070
 ## Templates
 
 ### ¿Qúe son?
-Las **Templates**, o plantillas, son básicamente cadenas de texto que pueden contener codigo HTML. Sirven para separar la parte lógica de la parte visual de un documento web. Hasta ahora habiamos incrustado nuestro código HTML en las vistas, pero esto no debería hacerse. Hay muchas formas de usar las templates. La más normal es guardar la cadena de texto (el documento HTML) en un documento o fichero independiente y despues simplemente cargar ese fichero en la vista.
+Las **Templates**, o plantillas, son básicamente cadenas de texto que pueden contener codigo HTML. Sirven para separar la parte lógica de la parte visual de un documento web. Hasta ahora habiamos incrustado nuestro código HTML en las vistas, pero esto no debería hacerse. Hay muchas formas de usar las templates. La más normal es guardar la cadena de texto (el documento HTML) en un documento o fichero independiente y después simplemente cargar ese fichero en la vista.
 <br>
 
 ### ¿Cómo se usan las plantillas?
 El proceso básico para usar una plantilla consta de 3 pasos:
-1. Crear un objeto de tipo Template que lea ese documento donde guardamos nuestra cadena de texto externa de HTML. La Template se crea de la siguiente forma: 
+1. Crear un objeto de tipo Template que lea ese documento donde guardamos nuestra cadena de texto externa de HTML. La template se crea de la siguiente forma: 
 ``plt = Template(doc_externo.read())`` 
 2. Crear un **contexto**. El contexto son los datos adicionales que puede llegar a utilizar la template. Por ejemplo, si queremos añadir contenido dinámico al HTML (como los parámetros en el ejemplo anterior), estos iran almacenados dentro del contexto. El contexto siempre tendremos que crearlo, aunque esté vacío. El contexto se escribe de la forma 
 ``ctx = Context()``
@@ -235,7 +235,7 @@ Como primer paso vamos a crear una carpeta *Templates* en nuestro directorio don
 ``` 
 <br>
 
-Ahora tenemos que abrir este documento en nuestro vista y crear una template que lo lea. El código de la función queda de la siguiente forma: 
+Ahora tenemos que abrir este documento en nuestra vista y crear una template que lo lea. El código de la función queda de la siguiente forma: 
 
 ```
 def saludo(request):
@@ -374,9 +374,9 @@ También podemos añadir condicionales en nuestras templates, como para comproba
   No hay elementos que  mostrar
 {% endif %}
 ```
-Lo que hace este if es verificar si la variable *lista_nombres* existe y tiene información. Si ambas se cumple, entra en el if, si alguna de las dos condiciones falla, entra al else. Tambien podemos hacer comperaciones con los símbolos >, < o == en la plantilla. Por ejemplo 
+Lo que hace este if es verificar si la variable *lista_nombres* existe y tiene información. Si ambas se cumple, entra en el if, si alguna de las dos condiciones falla, entra al else. También podemos hacer comperaciones con los símbolos >, < o == en la plantilla. Por ejemplo 
 ``{%if lista_nombres.1 == 'Raul` %}``
-Para añadir comentarios a una plantilla (no será visible en la página web, solo en el código), podemos hacerlo en una sola línea con la siguiente sintaxis: ``{#Comentario de una sola línea} ``, o si queremos que sea más de una linea, abriendo y cerrando una etiqueta *comment* 
+Para añadir comentarios a una plantilla (no será visible en la página web, solo en el código), podemos hacerlo en una sola línea con la siguiente sintaxis: ``{#Comentario de una sola línea} ``, o si queremos que sea más de una línea, abriendo y cerrando una etiqueta *comment* 
 ```
 {% comment %}
 Comentario múltiples lineas
@@ -405,7 +405,7 @@ from django.template.loader import get_template
 ```
 <br>
 
-El método *get_template()* es la clave que le permitiria a Django saber qué plantilla del directorio es la que queremos.Vamos a ver cómo funciona el loader. Para ello vamos a crear una nueva vista ``saludo_Loader``. La vista (habiendo importado previamente el loader) consistira en el siguiente código:
+El método *get_template()* es la clave que le permitiria a Django saber qué plantilla del directorio es la que queremos. Vamos a ver cómo funciona el loader. Para ello vamos a crear una nueva vista ``saludo_Loader``. La vista (habiendo importado previamente el loader) consistira en el siguiente código:
 
 ```
 def saludo_Loader(request):
@@ -418,7 +418,7 @@ def saludo_Loader(request):
 
 Para indicar el directorio donde vamos a tener almacenadas nuestras plantillas, tendremos que hacerlo desde el archivo `settings.py`. En el archivo settings tenemos una lista llamada *TEMPLATES* con un diccionario con toda la información relacionada con las plantillas. En el diccionario podemos ver una key llamada `DIRS` con una lista vacía. Cuando está vacia, Django busca en un directorio por defecto en la instalación de Django. Añadimos simplemente la ruta de la carpeta donde tenemos almacenadas nuestras templates a la lista de `DIRS`.
 
-Una cosa muy **importante** que podemos notar es que ahora no usamos contexto. La función *get_template()* nos devuelve una instancia de una clase Template, PERO no es la misma clase Template que en los casos anteriores. Por asi decirlo es como una clase Template de Loader. Y en este tipo de Templates, el render funciona de manera diferente. No admite un Contexto como parámetro, sino directamente un diccionario, asi que aparte de ahorrarnos toda la parte de abrir leer y cerrar los archivos, tambien nos ahorramos una instancia del Context al usar Loaders. Podemos ver nuestro Loader en la URL http://127.0.0.1:8000/saludo_loader/
+Una cosa muy **importante** que podemos notar es que ahora no usamos contexto. La función *get_template()* nos devuelve una instancia de una clase Template, PERO no es la misma clase Template que en los casos anteriores. Por asi decirlo es como una clase Template de Loader. Y en este tipo de Templates, el render funciona de manera diferente. No admite un Contexto como parámetro, sino directamente un diccionario, asi que aparte de ahorrarnos toda la parte de abrir leer y cerrar los archivos, también nos ahorramos una instancia del Context al usar Loaders. Podemos ver nuestro Loader en la URL http://127.0.0.1:8000/saludo_loader/
 
 ### Shortcuts
 
@@ -439,13 +439,13 @@ def saludo_Shortcut(request):
     dict = {"lista_nombres":["Jose", "Raul", "Pedro", "Juan", "Ramón"]}
     return render(request,'lista_Ejemplos_Template.html',dict )       
 ```
-Como podemos ver, ahora no ha sido necesaria la instancia de plantilla ni contexto, por lo que nos hemos ahorrado unas cuantas lineas, y ahora nuestra vista devuelve una función render, no una HttpResponse. Podemos verlo en la URL http://127.0.0.1:8000/saludo_shortcut/
+Como podemos ver, ahora no ha sido necesaria la instancia de plantilla ni contexto, por lo que nos hemos ahorrado unas cuantas líneas, y ahora nuestra vista devuelve una función render, no una HttpResponse. Podemos verlo en la URL http://127.0.0.1:8000/saludo_shortcut/
 
 ### Templates incrustadas
 
 A veces tendremos que unir varios HTML dentro de un mismo porque queremos reutilizar varias veces el mismo archivo. Por ejemplo, una barra de navegación que queramos poner en todas nuestras URLs en las cabeceras. Lo que se suele hacer es hacer la barra en un fichero HTML independiente e incrustarlo en nuestra página web.
 
-Vamos a ver cómo funcionan las incrustaciones. Vamos a crear una nueva plantilla `barra.html` con una lista muy básica. ya después añadiremos CSS.
+Vamos a ver cómo funcionan las incrustaciones. Vamos a crear una nueva plantilla `barra.html` con una lista muy básica. Ya después añadiremos CSS.
 ```
 <html>
 <body>
@@ -460,7 +460,7 @@ Vamos a ver cómo funcionan las incrustaciones. Vamos a crear una nueva plantill
 </html>
 ```
 
-Despues simplemente tenemos que indicar en nuestra template principal donde ira incrustada nuestra plantilla secundaria.  
+Después simplemente tenemos que indicar en nuestra template principal donde ira incrustada nuestra plantilla secundaria.  
 
 ```
 <html>
@@ -498,7 +498,7 @@ Ahora parece más una barra de navegación
 
 ### Herencia de Templates
 
-A veces puede ocurrir que una página web tenga que teneer los mismos elementos comunes en todos lados, como un header o un footer, pero el contenido tenga que ir cambiando. Entonces ir añadiendo el include en cada sitio puedo no ser lo más optimo. Para estos casos usamos la **Herencia de plantillas**
+A veces puede ocurrir que una página web tenga que teneer los mismos elementos comunes en todos lados, como un header o un footer, pero el contenido tenga que ir cambiando. Entonces ir añadiendo el include en cada sitio puedo no ser lo más óptimo. Para estos casos usamos la **Herencia de plantillas**
 
 Es muy similar a como funciona la herencia de POO en Python. Tenemos una plantilla padre con todos los contenidos que van a ser común en todos los sitios web y un **bloque cambiante** que es lo que va a ir cambiando de plantilla en plantilla.
 
@@ -526,7 +526,7 @@ Vamos a empezar creando una plantilla padre, `padre_Template.html` con la siguie
 </html>
 ```
 
-Para indicarle a Django que un bloque va a cambiar de template en template, simplemente usamos la etiqueta `{% block nombre_bloque %}` cerrándola posteriormente con `{% endblock %}`. En este ejemplo hemos creado un HTML básico donde el titulo y el contendio va a cambiar, pero los Headers y el pie de página será el mismo para todas las hijas. 
+Para indicarle a Django que un bloque va a cambiar de template en template, simplemente usamos la etiqueta `{% block nombre_bloque %}` cerrándola posteriormente con `{% endblock %}`. En este ejemplo hemos creado un HTML básico donde el título y el contendio va a cambiar, pero los Headers y el pie de página será el mismo para todas las hijas. 
 
 Ahora crearemos una template hija, `hija1_Template.html`, extendiendo de la template padre primero, y poniendo entre las etiquetas de block lo que queremos que contenga esa template.
 ```
@@ -541,7 +541,7 @@ Hija numero 1
 {% endblock %}
 ```
 
-Si creamos una view que renderice `hija1_Template.html` como hemos visto en apartados anteriors, y creamos un URL para esta view, (http://127.0.0.1:8000/herencia1_template/ en mi caso), podemos ver que en el titulo de la pestaña aparece efectivamente el titulo de Hija número 1, y que paarece el párrafo con la fecha actual.
+Si creamos una view que renderice `hija1_Template.html` como hemos visto en apartados anteriors, y creamos un URL para esta view, (http://127.0.0.1:8000/herencia1_template/ en mi caso), podemos ver que en el título de la pestaña aparece efectivamente el título de Hija número 1, y que paarece el párrafo con la fecha actual.
 
 Si ahora creamos una segunda plantilla hija, `hija2_Template.html`, solo tenemos que cambiar el código de los bloques, y el resto seguirá igual. 
 
@@ -557,7 +557,7 @@ Hija numero 2
 {% endblock %}
 ```
 
-Podemos ver la nueva plantilla en http://127.0.0.1:8000/herencia2_template/ (abiendo creado previamente el URL de herencia2_template claro). Podemos incrustar plantillas en la plantilla padre, por ejemplo la barra de navegación que creamos en el apartado anterior, para que todas las hijas también lo tengan. En este caso queremos que esté bajo el titheaderulo que hemos creado, asi que incluiremos la barra bajo el la etiqueta h1 en la plantilla padre
+Podemos ver la nueva plantilla en http://127.0.0.1:8000/herencia2_template/ (abiendo creado previamente el URL de herencia2_template claro). Podemos incrustar plantillas en la plantilla padre, por ejemplo la barra de navegación que creamos en el apartado anterior, para que todas las hijas también lo tengan. En este caso queremos que esté bajo el titheaderulo que hemos creado, asi que incluiremos la barra bajo la etiqueta h1 en la plantilla padre
 ```      
 <h1> Test Gonzalo</h1>
 {% include "barra.html" %}
@@ -572,7 +572,7 @@ Hasta ahora hemos visto la parte Template y View del estilo MTV que es Django. A
 
 Como la base de datos ya está creada, nosotros solo necesitaremos crear las tablas con las columnas e información que necesitemos. Para ello usaremos la clase ***Model*** de Django. 
 
-Para trabjar con la base de datos vamos a crear un nuevo proyecto que será una Tienda Online con una aplicqación que gestione los pedidos y tenga diversas tablas de bases de datos. Un proyecto no tiene porque tener aplicaciones, sobre todo si es pequeño, pero para poder trabajar con modelos y bases de datos Django necesita que exista al menos una aplicación.
+Para trabjar con la base de datos vamos a crear un nuevo proyecto que será una Tienda Online con una aplicqación que gestione los pedidos y tenga diversas tablas de bases de datos. Un proyecto no tiene por qué tener aplicaciones, sobre todo si es pequeño, pero para poder trabajar con modelos y bases de datos Django necesita que exista al menos una aplicación.
 
 ### Ejemplo Práctico
 
@@ -582,7 +582,7 @@ Vamos a crear una Tienda online con una app llamada *Gestion_Pedidos* que se enc
 
 | Clientes | Artículos | Pedidos |
 |------|------|---------|
-| Nombre | Nombre | Numero|
+| Nombre | Nombre | Número|
 | Dirección | Sección | Fecha|
 | Email | Precio | Entregado |
 | Teléfono | 
@@ -601,20 +601,20 @@ python manage.py startapp Gestion_Pedidos
 <br>
 
 
-Este comando nos creara una nueva carpeta que corresponde a nuestra priemra aplicación con todos los archivos necesarios para la aplicación.
+Este comando nos creará una nueva carpeta que corresponde a nuestra priemra aplicación con todos los archivos necesarios para la aplicación.
 
 #### Creación del modelo
 
-Vamos a trabajar con las bases de datos en nuestro archivo ``model.py``. Django le da un enfoque orientado a objetos al manejo de las bases de datos, tablas, etc. Asi que en nuestro archivo model tendremos que crear una clase por cada  tabla que necesitemos en la base de datos. No necesitaremos ningun comando de SQL para crear tablas ni nada por el estilo, Django lo hace por nosotros. 
+Vamos a trabajar con las bases de datos en nuestro archivo ``model.py``. Django le da un enfoque orientado a objetos al manejo de las bases de datos, tablas, etc. Asi que en nuestro archivo model tendremos que crear una clase por cada tabla que necesitemos en la base de datos. No necesitaremos ningun comando de SQL para crear tablas ni nada por el estilo, Django lo hace por nosotros. 
 
-Vamos a crear nuestra primera clase llamada *Clientes*. Como necesitamos trabajar con la clase Model, hacemos que nuestra clase la herede. Dentro de la clase empezamos a crear los campos que queremos en nuestra tabla y el tipo de dato que va almacenar dentro el campo.
+Vamos a crear nuestra primera clase llamada *Clientes*. Como necesitamos trabajar con la clase Model, hacemos que nuestra clase la herede. Dentro de la clase empezamos a crear los campos que queremos en nuestra tabla y el tipo de dato que va a almacenar dentro el campo.
 ```
 class Clientes(models.Model):
     nombre = models.CharField(max_length=30)
 ```
 <br>
 
-Hemos creado un campo *nombre* de tipo texto o Char, y le hemos fijado la longitud máxima de caracteres del campo a 30. De la misma forma que hemos indicado que nuestro campo es de tipo texto, podemos decir si es de tipo Integer, tipo Date, tipo Boolean o incluso tipo Email (lo que solo permite al campo que se introduzcan direcciones de correo validas, que tengan un @ o un punto.).
+Hemos creado un campo *nombre* de tipo texto o Char, y le hemos fijado la longitud máxima de caracteres del campo a 30. De la misma forma que hemos indicado que nuestro campo es de tipo texto, podemos decir si es de tipo Integer, tipo Date, tipo Boolean o incluso tipo Email (lo que solo permite al campo que se introduzcan direcciones de correo válidas, que tengan un @ o un punto.).
 
 Vamos a completar entonces la tabla y a crear el resto de tablas de nuestro modelo de forma análoga. Al final, nuestro archivo ``models.py`` queda de la siguiente forma:
 
@@ -641,13 +641,13 @@ class Pedidos(models.Model):
 <br>
 
 
-Ya tenemos creado nuestro primer modelo con la estructura de nuestra base de datos. Ahora tenemos que decirle a Django que tenemos una aplicación nuevo llamada *Gestion_Pedidos*. Para ello, tenemos que registrar la app en el archivo ``settings.py`` de nuestro proyecto *Tienda_online*. Tenemos que añadirlo a la lista llamada **INSTALLED_APPS** que contiene las aplicaciones predeterminadas que tiene un proyecto de Django al crearlo. 
+Ya tenemos creado nuestro primer modelo con la estructura de nuestra base de datos. Ahora tenemos que decirle a Django que tenemos una aplicación nueva llamada *Gestion_Pedidos*. Para ello, tenemos que registrar la app en el archivo ``settings.py`` de nuestro proyecto *Tienda_online*. Tenemos que añadirlo a la lista llamada **INSTALLED_APPS** que contiene las aplicaciones predeterminadas que tiene un proyecto de Django al crearlo. 
 
 Para verificar que por ahora lo hemos hecho todo bien, podemos ingresar el siguiente comando en la consola 
 ```
 python manage.py check Gestion_Pedidos
 ```
-que nos confirmara si hay algun problema con nuestro proyecto.
+que nos confirmará si hay algun problema con nuestro proyecto.
 
 #### Creación de la base de datos.
 
@@ -657,11 +657,11 @@ python manage.py makemigrations
 ```
 <br>
 
-Nos debe devolver un mensaje con un **Número de control** (importante despues para controlar la versión de nuestro modelo o las modificaciones. En nuestro caso es 0001 por ser la primera migración) diciendo que se ha hecho la migración con los modelos que hemos creado. En nuestro directorio ya podemos ver un archivo ``db.sqlite3`` que es nuestra base de datos que esta vacía. Nos toca ahora insertar las tablas de nuestro modelo en la base de datos. Para ello necesitamos los comandos SQL que crean las tablas, pero Django lo hace por nosotros. Para ello usaremos el siguiente comando:
+Nos debe devolver un mensaje con un **Número de control** (importante después para controlar la versión de nuestro modelo o las modificaciones. En nuestro caso es 0001 por ser la primera migración) diciendo que se ha hecho la migración con los modelos que hemos creado. En nuestro directorio ya podemos ver un archivo ``db.sqlite3`` que es nuestra base de datos que está vacía. Nos toca ahora insertar las tablas de nuestro modelo en la base de datos. Para ello necesitamos los comandos SQL que crean las tablas, pero Django lo hace por nosotros. Para ello usaremos el siguiente comando:
 ```
 python manage.py sqlmigrate Gestion_Pedidos 0001
 ```
-es decir, la función *sqlmigrate* del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el numero de control de la migración que hayamos hecho.
+es decir, la función *sqlmigrate* del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el número de control de la migración que hayamos hecho.
 
 Este código nos devolverá los comando SQL que necesitamos para crear las tablas en nuestra base de datos. Una vez que los tengamos, crearemos las tablas con el siguiente comando
 
@@ -670,4 +670,5 @@ python manage.py migrate
 ```
 <br>
 
-Ya tenemos lista nuestra base de datos con todas nuestras tablas y campos creados. Si usamos un visor de tablas de datos podemos ver que todas nuestras tablas se han creado, aparte de algunas tablas extras que necesita Django para operar. Además, en nuestras tablas podemos ver que hay un campo extra 'id' que es la primary key de cada tabla y es generada automaticamente por Django. Si queremos cambiarle el nombre o crear otra distinta nosotros mismos, también es posible. 
+Ya tenemos lista nuestra base de datos con todas nuestras tablas y campos creados. Si usamos un visor de tablas de datos podemos ver que todas nuestras tablas se han creado, aparte de algunas tablas extras que necesita Django para operar. Además, en nuestras tablas podemos ver que hay un campo extra 'id' que es la primary key de cada tabla y es generada automaticamente por Django. Si queremos cambiarle el nombre o crear otra distinta nosotros mismos, también es posible. adsf 
+
