@@ -670,5 +670,75 @@ python manage.py migrate
 ```
 <br>
 
-Ya tenemos lista nuestra base de datos con todas nuestras tablas y campos creados. Si usamos un visor de tablas de datos podemos ver que todas nuestras tablas se han creado, aparte de algunas tablas extras que necesita Django para operar. Además, en nuestras tablas podemos ver que hay un campo extra 'id' que es la primary key de cada tabla y es generada automaticamente por Django. Si queremos cambiarle el nombre o crear otra distinta nosotros mismos, también es posible. adsf 
+Ya tenemos lista nuestra base de datos con todas nuestras tablas y campos creados. Si usamos un visor de tablas de datos podemos ver que todas nuestras tablas se han creado, aparte de algunas tablas extras que necesita Django para operar. Además, en nuestras tablas podemos ver que hay un campo extra 'id' que es la primary key de cada tabla y es generada automaticamente por Django. Si queremos cambiarle el nombre o crear otra distinta nosotros mismos, también es posible. 
+
+
+#### Manejo de registros
+Ahora vamos a ver como crear, actualizar o borrar registros de nuestra base de datos. Por ahora vamos a hacerlo desde la consola, pero nuestro objetivo final será manejar los registros desde formularios. 
+
+Para manejar la base de datos desde la consola, lo primero que tenemos que hacer es abrir el *shell*. Para ello usamos el siguiente comando desde el directorio de nuestro proyecto:
+
+```
+python manage.py shell
+```
+<br>
+
+Vamos a modificar nuestra tabla Artículos, asi que lo primero en la consola es importar nuestro modelo
+```
+>>> from Gestion_Pedidos.models import Articulos
+```
+<br>
+
+La forma de importar es ``from nombreApp.models import nombreClaseModelo``. Para añadir un nuevo registro lo primero que tenemos que hacer es crear una nueva variable que sea una instancia del modelo que tome como argumentos *propiedad = valor* searados por comas, es decir,
+
+```
+>>> art = Articulos(nombre="mesa", seccion = "decoracion", precio = 90)
+```
+<br>
+
+Lo que hace esto es simplemente hacer que Django genere de fondo una instrucción SQL que inserte este registro en la tabla, pero nosotros no lo vemos. Para ejecutar la acción de insertar y finalmente **crear** el registro simplemente llamamos a la función save de la variable que acabamos de crear
+
+```
+>>> art.save()
+```
+<br>
+
+Si comprobamos nuestra base de datos con algun visor, podemos comprobar que efectivamente se ha registrado un nuevo artículo en nuestra tabla.
+
+Podemos ahorrarnos un paso y crear directamente el artículo en la base de datos en vez de una variable y luego salvarla si usamos el comando *create*
+
+```
+>>> art2 = Articulos.objects.create(nombre="taladro", seccion = "ferreteria", precio = 40)
+```
+<br>
+
+Para **actualizar** un registro, simplemente tenemos que llamar a la propiedad del registro que queremos con un punto y asignarle un nuevo valor. Después lo salvamos y ya se habrá actualizado en nuestra base de datos.
+
+```
+>>> art.precio = 80
+>>> art.save()
+```
+<br>
+
+Y finalmente para **borrar** un registro tenemos que obtener el registro que queremos borrar a trabes de la función *get()*, metiendo como parámetro el criterio de filtro para seleccionar el record(s) que queremos eliminar (id, fechas, precios...), y usando el método *delete* con ese record
+
+```
+>>> artDel = Articulos.objects.get(id=2)
+>>> artDel.delete()
+```
+<br>
+
+Si queremos hacer una instrucción como el **Select** de SQL para poder ver la información de los registros de mi tabla, tendriamos que crear una variable donde almacenaramos la lista de registros de la siguiente forma.
+
+```
+>>> Lista = Articulos.objects.all()
+```
+<br>
+
+Esta variable es un objeto de tipo QuerySet con todos los articulos que hay en la tabla con el identificador único para poder identificar los distintos objetos. Si queremos acceder a alguna propiedad de un valor concreto, podemos hacerlo de la siguiente forma:
+
+```
+>>> Lista[0].precio
+```
+lo cual nos devuelve el precio del primer elemento de la Lista. 
 

@@ -7,3 +7,4 @@
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qque nos confirmará si hay algun problema con nuestro proyecto.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qes decir, la función sqlmigrate del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el numero de control de la migración que hayamos hecho.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qes decir, la función sqlmigrate del fichero manage, y como parámetros el nombre de la app de nuestro modelo y el número de control de la migración que hayamos hecho.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qlo cual nos devuelve el precio del primer elemento de la Lista.\\E$"}
